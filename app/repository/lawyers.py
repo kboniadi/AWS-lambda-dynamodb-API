@@ -10,10 +10,10 @@ class LawyersRepository:
         response = table.scan()
         return response.get('Items', [])
 
-    def get_lawyer(self, uid: str):
+    def get_lawyer(self, email: str):
         try:
             table = self.__db.Table('Lawyers')
-            response = table.get_item(Key={'uid': uid})
+            response = table.get_item(Key={'email': email})
             return response['Item']
         except ClientError as e:
             raise ValueError(e.response['Error']['Message'])
@@ -26,27 +26,33 @@ class LawyersRepository:
     def update_lawyer(self, lawyer: dict):
         table = self.__db.Table('Lawyers')
         response = table.update_item(
-            Key={'uid': lawyer.get('uid')},
+            Key={'email': lawyer.get('email')},
             UpdateExpression="""
                 set
+                    #email=:email,
                     #title=:title,
                     #name=:name,
+                    #languages=:languages,
                     #location=:location,
                     #phone=:phone,
                     #description=:description,
                     #expertise=:expertise
             """,
             ExpressionAttributeValues={
+                ':email': lawyer.get('email'),
                 ':title': lawyer.get('title'),
                 ':name': lawyer.get('name'),
+                ':languages': lawyer.get('languages'),
                 ':location': lawyer.get('location'),
                 ':phone': lawyer.get('phone'),
                 ':description': lawyer.get('description'),
                 ':expertise': lawyer.get('expertise')
             },
             ExpressionAttributeNames={
+                "#email": "email",
                 "#title": "title",
                 "#name": "name",
+                "#lanuages": "lanuages",
                 "#location": "location",
                 "#phone": "phone",
                 "#description": "description",
@@ -56,9 +62,9 @@ class LawyersRepository:
         )
         return response
 
-    def delete_lawyer(self, uid: str):
+    def delete_lawyer(self, email: str):
         table = self.__db.Table('Lawyers')
         response = table.delete_item(
-            Key={'uid': uid}
+            Key={'email': email}
         )
         return response

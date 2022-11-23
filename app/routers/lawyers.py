@@ -20,10 +20,10 @@ class LawyersRouter:
         def create_lawyer(lawyers_model: LawyersModel):
             return self.__lawyers_domain.create_lawyer(lawyers_model)
 
-        @api_router.get('/get/{lawyer_uid}')
-        def get_lawyer(lawyer_uid: str):
+        @api_router.get('/get/{lawyer_email}')
+        def get_lawyer(lawyer_email: str):
             try:
-                return self.__lawyers_domain.get_lawyer(lawyer_uid)
+                return self.__lawyers_domain.get_lawyer(lawyer_email)
             except KeyError:
                 raise HTTPException(status_code=400, detail='No lawyer found')
 
@@ -31,9 +31,9 @@ class LawyersRouter:
         def update_lawyer(lawyers_model: LawyersModel):
             return self.__lawyers_domain.update_lawyer(lawyers_model)
 
-        @api_router.delete('/delete/{lawyer_uid}')
-        def delete_lawyer(lawyer_uid: str):
-            return self.__lawyers_domain.delete_lawyer(lawyer_uid)
+        @api_router.delete('/delete/{lawyer_email}')
+        def delete_lawyer(lawyer_email: str):
+            return self.__lawyers_domain.delete_lawyer(lawyer_email)
 
         @api_router.get('/all')
         def get_all():

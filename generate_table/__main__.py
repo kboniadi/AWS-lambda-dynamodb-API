@@ -10,4 +10,5 @@ def drop_table():
     drop_lawyers(ddb)
 
 if __name__ == '__main__':
+    # drop_table()
     generate_table()

@@ -4,13 +4,13 @@ def generate_lawyers(ddb):
         TableName='Lawyers',
         AttributeDefinitions=[
             {
-                'AttributeName': 'uid',
+                'AttributeName': 'email',
                 'AttributeType': 'S'
             }
         ],
         KeySchema=[
             {
-                'AttributeName': 'uid',
+                'AttributeName': 'email',
                 'KeyType': 'HASH'
             }
         ],
