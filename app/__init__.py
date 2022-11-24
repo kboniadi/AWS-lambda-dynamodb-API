@@ -33,26 +33,22 @@ def create_app(config_class=Config):
         ma.init_app(app)
         jwt.init_app(app)
         cors.init_app(app)
-        limiter.init_app(app)
+        # limiter.init_app(app)
 
-    # from app.users import bp as users_bp
-    # from app.posts import bp as posts_bp
-    # from app.comments import bp as comments_bp
-    # from app.routers.auth import bp as auth_bp
+    from app.routers.users import bp as users_bp
+    from app.routers.auth import bp as auth_bp
     from app.errors import bp as errors_bp
     # from app.tasks import bp as tasks_bp
     from app.routers.lawyers import bp as lawyers_bp
 
     app.register_blueprint(errors_bp)
-    # app.register_blueprint(users_bp, url_prefix="/api/users")
-    # app.register_blueprint(posts_bp, url_prefix="/api/posts")
-    # app.register_blueprint(comments_bp, url_prefix="/api/comments")
-    # app.register_blueprint(auth_bp, url_prefix="/api/auth")
+    app.register_blueprint(users_bp, url_prefix="/api/users")
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
     # app.register_blueprint(tasks_bp, url_prefix="/api/tasks")
     app.register_blueprint(lawyers_bp, url_prefix="/api/lawyers")
     
     # Set the rate limit for all routes in the auth_bp blueprint to 1 per second
-    # limiter.limit("60 per minute")(auth_bp)
+    limiter.limit("60 per minute")(auth_bp)
 
     # Set the debuging to rotating log files and the log format and settings
     if not app.debug:
