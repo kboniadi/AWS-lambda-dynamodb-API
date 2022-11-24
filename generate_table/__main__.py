@@ -1,5 +1,5 @@
 from generate_table import initialize_db
-from generate_table.lawyers import generate_lawyers, drop_lawyers
+from generate_table.core import generate_lawyers, drop_lawyers
 
 def generate_table():
     ddb = initialize_db()

@@ -42,4 +42,4 @@ def delete_lawyer(lawyer_email: str):
 
 @bp.get("/all")
 def get_all():
-    return lawyers_domain.get_all()
+    return jsonify({"data": lawyers_domain.get_all()})

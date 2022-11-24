@@ -13,6 +13,9 @@ class Config(object):
 
     """
 
+    USER_NAME = os.environ.get("USER_NAME")
+    PASSWORD = os.environ.get("PASSWORD")
+
     SECRET_KEY = os.environ.get("SECRET_KEY")
 
 

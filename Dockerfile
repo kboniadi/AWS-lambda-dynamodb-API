@@ -19,9 +19,7 @@ USER root
 RUN chmod +x /app/boot.sh
 USER user
 
-ENV FLASK_APP app/main.py
-
 EXPOSE 5000
 
-# CMD ["flask", "run"]
-ENTRYPOINT ["./boot.sh"]
+CMD ["python", "-m", "flask", "--app", "app.main", "--debug", "run", "--host=0.0.0.0"]
+# ENTRYPOINT ["./boot.sh"]

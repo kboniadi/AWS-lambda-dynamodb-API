@@ -16,7 +16,15 @@
         </li>
         
       </ul>
-      <button class="btn btn-outline-secondary" type="submit">logout</button>
+        {% if current_user.is_authenticated %}
+          <form method="POST" action="{{ url_for('logout')}}" class="d-flex">
+            <button class="btn btn-outline-secondary" type="submit">logout</button>
+          </form>
+        {% else %}
+          <form method="POST" action="{{ url_for('login')}}" class="d-flex">
+            <button class="btn btn-outline-secondary" type="submit">login</button>
+          </form>
+        {% endif %}
     </div>
   </div>
 </nav>
