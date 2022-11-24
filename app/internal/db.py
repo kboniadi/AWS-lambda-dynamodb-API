@@ -24,5 +24,4 @@ def initialize_db() -> ServiceResource:
                          region_name='example',
                          aws_access_key_id='example',
                          aws_secret_access_key='example')
-
     return ddb

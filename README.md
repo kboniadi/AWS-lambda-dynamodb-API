@@ -128,3 +128,56 @@ aws cloudformation delete-stack --stack-name cfgi-api
 See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
 
 Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond hello world samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
+
+## Installation
+
+##### Template and Dependencies
+
+* Clone this repository:
+
+```
+$ git clone https://github.com/stefanvdw1/flask-api-template.git
+```
+
+### Virtual Environment Setup
+
+It is preferred to create a virtual environment per project, rather then installing all dependencies of each of your 
+projects system wide. Once you install [virtual env](https://virtualenv.pypa.io/en/stable/installation/), and move to 
+your projects directory through your terminal, you can set up a virtual env with:
+
+```bash
+python3 -m venv .venv
+```
+
+### Dependency installations
+
+To install the necessary packages:
+
+```bash
+source venv/bin/activate
+pip3 install -r requirements.txt
+```
+
+This will install the required packages within your venv.
+
+---
+
+## Running the Application
+
+Once you have setup your database, you are ready to run the application.
+Assuming that you have exported your app's path by:
+
+```bash
+export FLASK_APP=main.py
+```
+
+You can go ahead and run the application with a simple command:
+
+```bash
+flask run
+```
+
+---
+
+## Gunicorn
+TODO
