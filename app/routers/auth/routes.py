@@ -1,20 +1,16 @@
 from datetime import timedelta
 from typing import Optional, Tuple
-from flask import request, jsonify, current_app
+
 import redis
+from flask import current_app, jsonify, request
+from flask_jwt_extended import (create_access_token, create_refresh_token,
+                                get_jwt, get_jwt_identity, jwt_required)
+from marshmallow import ValidationError
+
 from app import db, jwt
-from app.routers.auth import bp
 from app.errors.handlers import bad_request, error_response
 from app.models import Users
-from flask_jwt_extended import (
-    create_access_token,
-    create_refresh_token,
-    get_jwt_identity,
-    jwt_required,
-    get_jwt,
-)
-
-from marshmallow import ValidationError
+from app.routers.auth import bp
 
 ACCESS_EXPIRES = timedelta(hours=1)
 
@@ -96,7 +92,7 @@ def login():
 
 @bp.post("/refresh")
 @jwt_required(refresh=True)
-def refresh() -> Tuple[str, int]:
+def refresh():
     """
     Endpoint in order to retrieve a new access JWT using the refresh JWT.
     A non-fresh access token is returned because the password is not involved in this transaction
@@ -114,7 +110,7 @@ def refresh() -> Tuple[str, int]:
 
 
 @bp.post("/fresh-login")
-def fresh_login() -> Tuple[str, int]:
+def fresh_login():
     """
     Endpoint for requesting a new fresh access token
 
@@ -141,7 +137,7 @@ def fresh_login() -> Tuple[str, int]:
 
 @bp.delete("/logout/token")
 @jwt_required()
-def logout_access_token() -> Tuple[str, int]:
+def logout_access_token():
     """
     Endpoint for revoking the current user"s access token
     Returns
@@ -158,7 +154,7 @@ def logout_access_token() -> Tuple[str, int]:
 
 @bp.delete("/logout/fresh")
 @jwt_required(refresh=True)
-def logout_refresh_token() -> Tuple[str, int]:
+def logout_refresh_token():
     """
     Endpoint for revoking the current user's refresh token
     Returns
