@@ -6,7 +6,7 @@ from flask_jwt_extended import current_user, jwt_required
 
 # from app.models import Users
 # from app.schemas import UsersSchema
-from app.errors.handlers import bad_request
+from app.routers.errors.handlers import bad_request
 from app.routers.users import bp
 
 # Declare database schemas so they can be returned as JSON objects

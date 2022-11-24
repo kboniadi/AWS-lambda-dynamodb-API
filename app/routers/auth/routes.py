@@ -2,13 +2,13 @@ from datetime import timedelta
 from typing import Optional, Tuple
 
 import redis
-from flask import current_app, jsonify, request
+from flask import current_app, jsonify, request, render_template
 from flask_jwt_extended import (create_access_token, create_refresh_token,
                                 get_jwt, get_jwt_identity, jwt_required)
 from marshmallow import ValidationError
 
 from app import db, jwt
-from app.errors.handlers import bad_request, error_response
+from app.routers.errors.handlers import bad_request, error_response
 from app.models import Users
 from app.routers.auth import bp
 

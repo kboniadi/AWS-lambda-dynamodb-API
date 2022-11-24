@@ -1,7 +1,7 @@
 from flask import request, jsonify
 
 from app.routers.lawyers import bp
-from app.errors.handlers import bad_request
+from app.routers.errors.handlers import bad_request
 
 from flask_jwt_extended import jwt_required, current_user
 

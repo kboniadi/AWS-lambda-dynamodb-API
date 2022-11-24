@@ -1,4 +1,4 @@
-from app.errors.handlers import bad_request
+from app.routers.errors.handlers import bad_request
 from re import T
 from flask import jsonify
 

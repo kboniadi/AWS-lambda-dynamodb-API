@@ -136,7 +136,7 @@ Next, you can use AWS Serverless Application Repository to deploy ready to use A
 * Clone this repository:
 
 ```
-$ git clone https://github.com/stefanvdw1/flask-api-template.git
+$ git clone https://github.com/kboniadi/AWS-lambda-dynamodb-API.git
 ```
 
 ### Virtual Environment Setup

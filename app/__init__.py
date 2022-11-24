@@ -37,7 +37,7 @@ def create_app(config_class=Config):
 
     from app.routers.users import bp as users_bp
     from app.routers.auth import bp as auth_bp
-    from app.errors import bp as errors_bp
+    from app.routers.errors import bp as errors_bp
     # from app.tasks import bp as tasks_bp
     from app.routers.lawyers import bp as lawyers_bp
 
