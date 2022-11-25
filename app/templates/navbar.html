@@ -6,15 +6,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
         </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="">Name</a>
-        </li>
-        
       </ul>
         {% if current_user.is_authenticated %}
           <form method="POST" action="{{ url_for('logout')}}" class="d-flex">

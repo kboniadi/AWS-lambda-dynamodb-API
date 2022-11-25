@@ -2,18 +2,19 @@ import os
 import uuid as uuid
 from datetime import date, datetime
 
-from flask import Flask, flash, redirect, render_template, request, url_for, current_app
+from flask import (Flask, current_app, flash, redirect, render_template,
+                   request, url_for)
 from flask_login import (LoginManager, UserMixin, current_user, login_required,
                          login_user, logout_user)
-from app.webforms import (LawyerPostForm, LoginForm, NamerForm, PasswordForm, PostForm, SearchForm,
-                      UserForm)
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
 from app import create_app
-
+from app.domain.lawyers_domain import LawyersModel
 from app.routers.lawyers.routes import lawyers_domain
-
+from app.webforms import (LawyerForm, LoginForm, NamerForm, PasswordForm,
+                          PostForm, SearchForm, UserForm)
+from app.helpers.languages import languagesDict
 app = create_app()
 
 # Flask_Login Stuff
@@ -79,18 +80,39 @@ def logout():
 @login_required
 def dashboard():
 	lawyers = lawyers_domain.get_all()
-	form = LawyerPostForm()
-	if request.method == 'POST':
-		btn_type, email = request.form['submit_button'].split(" ")
-		if btn_type == "Delete":
-			lawyers_domain.delete_lawyer(email)
-			flash(f"Successfully deleted {email}")
-		
-		return redirect(url_for("dashboard"))
+	return render_template('dashboard.html', lawyers=lawyers)
 
+@app.route('/lawyer/edit/<string:email>', methods=['GET', 'POST'])
+@login_required
+def edit_lawyer(email: str):
+	lawyer = lawyers_domain.get_lawyer(email)
+	lawyer["profile_url"] = ""
+	form = LawyerForm(expertise=lawyer["expertise"], languages=map(lambda x: languagesDict[x], lawyer["languages"]))
+	if form.validate_on_submit():
+		lawyer["name"] = form.name.data
+		lawyer["title"] = form.title.data
+		lawyer["description"] = form.description.data
+		lawyer["phone"] = form.phone.data
+		lawyer["languages"] = form.languages.data
+		lawyer["location"] = form.location.data
+		lawyer["expertise"] = form.expertise.data
 
-	return render_template('dashboard.html', lawyers=lawyers, form=form)
+		lawyers_domain.update_lawyer(LawyersModel.parse_obj(lawyer))
+		flash("Lawyer info has been updated")
+		return redirect(url_for('dashboard'))
+	form.name.data = lawyer["name"]
+	form.title.data = lawyer["title"]
+	form.description.data = lawyer["description"]
+	form.phone.data = lawyer["phone"]
+	form.location.data = lawyer["location"]
+	return render_template('edit_lawyer.html', form=form)
 
+@app.route('/lawyer/delete/<string:email>', methods=['GET', 'POST'])
+@login_required
+def delete_lawyer(email: str):
+	lawyers_domain.delete_lawyer(email)
+	flash(f"Successfully deleted {email}")
+	return redirect(url_for("dashboard"))
 
 # Create Custom Error Pages
 

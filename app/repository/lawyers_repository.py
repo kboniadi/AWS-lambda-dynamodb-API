@@ -19,7 +19,7 @@ class LawyersRepository:
     def get_lawyer(self, email: str):
         try:
             table = self.__db.Table('Core')
-            response = table.get_item(Key={'email': email})
+            response = table.get_item(Key={'category': "lawyer", 'email': email})
             return response['Item']
         except ClientError as e:
             logging.error(
@@ -35,7 +35,7 @@ class LawyersRepository:
     def update_lawyer(self, lawyer: dict):
         table = self.__db.Table('Core')
         response = table.update_item(
-            Key={'email': lawyer.get('email')},
+            Key={'category': "lawyer", 'email': lawyer.get('email')},
             UpdateExpression="""
                 set
                     #email=:email,

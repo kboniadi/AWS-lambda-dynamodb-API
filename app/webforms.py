@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, EqualTo, Length
 from wtforms.widgets import TextArea
 from flask_ckeditor import CKEditorField
 from flask_wtf.file import FileField
-from app.helpers import languages
+from app.helpers.languages import languagesList
 
 # Create A Search Form
 class SearchForm(FlaskForm):
@@ -18,15 +18,15 @@ class LoginForm(FlaskForm):
 	password = PasswordField("Password", validators=[DataRequired()])
 	submit = SubmitField("Submit")
 
-class LawyerPostForm(FlaskForm):
+class LawyerForm(FlaskForm):
 	profile_pic = FileField("Profile Pic")
 	name = StringField("Name", validators=[DataRequired()])
 	title = StringField("Title", validators=[DataRequired()])
 	description = StringField("Description", validators=[DataRequired()])
 	phone = StringField("Phone", validators=[DataRequired()])
-	languages = SelectMultipleField("Languages", choices=languages.languages)
+	languages = SelectMultipleField("Languages", choices=languagesList, render_kw={"multiselect-search":"true", "multiselect-select-all":"true", "multiselect-hide-x": "true"})
 	location = StringField("Location", validators=[DataRequired()])
-	expertise = SelectMultipleField("Expertise", choices=[('H1B', 'H1B'), ('OPT', 'OPT'), ('CPT', 'CPT'), ('F1 Visa', 'F1 Visa'), ('J1 Visa', 'J1 Visa')])
+	expertise = SelectMultipleField("Expertise", choices=[('H1B', 'H1B'), ('OPT', 'OPT'), ('CPT', 'CPT'), ('F1 Visa', 'F1 Visa'), ('J1 Visa', 'J1 Visa')], render_kw={"multiselect-search":"true", "multiselect-select-all":"true", "multiselect-hide-x": "true"})
 	submit = SubmitField("Submit")
 
 # Create a Posts Form

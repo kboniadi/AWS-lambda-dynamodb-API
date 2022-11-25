@@ -11,3 +11,12 @@ body {
 	font-size: 12px;
 	color: darkblue;
 }
+
+.multiselect-dropdown .placeholder {
+	cursor: default;
+	background-color: transparent;
+	opacity: 1;
+}
+.multiselect-dropdown {
+	padding: .375rem .75rem !important;
+}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+	  {{ message }}
+	  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+{% endfor %}
+
+<br/>
+<h2>Edit Lawyer</h2>
+<br/>
+<div class="shadow p-3 mb-5 bg-body rounded">
+	<form method="POST">
+		{{ form.hidden_tag() }}
+
+		{{ form.name.label(class="form-label") }}
+
+		{{ form.name(class="form-control") }}
+		<br/>
+
+		{{ form.title.label(class="form-label") }}
+
+		{{ form.title(class="form-control") }}
+		<br/>
+
+		{{ form.description.label(class="form-label") }}
+
+		{{ form.description(class="form-control") }}
+		<br/>
+
+		{{ form.phone.label(class="form-label") }}
+
+		{{ form.phone(class="form-control") }}
+		<br/>
+		
+		{{ form.languages.label(class="form-label") }}
+
+		{{ form.languages(class="form-control placeholder-override") }}
+		<br/>
+
+		{{ form.location.label(class="form-label mt-4") }}
+
+		{{ form.location(class="form-control") }}
+		<br/>
+		
+		{{ form.expertise.label(class="form-label") }}
+
+		{{ form.expertise(class="form-control placeholder-override") }}
+
+		<div class="d-flex justify-content-end gap-2 mt-4">
+			<a href="{{ url_for('dashboard')}}" class="btn btn-outline-secondary">Back</a>
+			{{ form.submit(class="btn btn-secondary") }}
+		</div>
+	</form>
+</div>
+<script src="{{ url_for('static', filename='js/vendor/multiselect-dropdown.js')}}"></script>
+{% endblock %}
