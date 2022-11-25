@@ -79,7 +79,14 @@ def logout():
 @login_required
 def dashboard():
 	lawyers = lawyers_domain.get_all()
-	print(lawyers)
+	print(request)
+	if request.method == 'POST':
+		if request.form['submit_button'] == 'Edit':
+			print(len(lawyers))
+
+		if request.form['submit_button'] == 'Delete':
+			print(lawyers)
+
 	# form = UserForm()
 	# if request.method == "POST":
 	# 	name_to_update.name = request.form['name']
@@ -127,7 +134,7 @@ def dashboard():
 	# 			name_to_update = name_to_update,
 	# 			id = id)
 
-	return render_template('dashboard.html')
+	return render_template('dashboard.html', lawyers=lawyers)
 
 
 # Create Custom Error Pages

@@ -30,23 +30,25 @@
 		</tr>
 		</thead>
 		<tbody>
-		<!-- <tr>
-			<th scope="row">1</th>
-			<td>Mark</td>
-			<td>Otto</td>
-			<td>@mdo</td>
-		</tr>
-		<tr>
-			<th scope="row">2</th>
-			<td>Jacob</td>
-			<td>Thornton</td>
-			<td>@fat</td>
-		</tr>
-		<tr>
-			<th scope="row">3</th>
-			<td colspan="2">Larry the Bird</td>
-			<td>@twitter</td>
-		</tr> -->
+			{% for lawyer in lawyers %}
+			<tr>
+				<th scope="row">{{ loop.index }}</th>
+				<td>lawyer.profile_url</td>
+				<td>{{ lawyer.name }}</td>
+				<td>{{ lawyer.title }}</td>
+				<td>{{ lawyer.description }}</td>
+				<td>{{ lawyer.phone }}</td>
+				<td>{{ lawyer.languages|join(', ') }}</td>
+				<td>{{ lawyer.location }}</td>
+				<td>{{ lawyer.expertise|join(', ') }}</td>
+				<td>
+					<form method="POST" action="/dashboard" class="d-flex justify-content-between">
+						<button type="submit" class="btn btn-success" name="submit_button" value="Edit"><i class="fas fa-edit"></i></button>
+						<button type="submit" class="btn btn-danger" name="submit_button" value="Delete"><i class="far fa-trash-alt"></i></button>
+					</form>
+				</td>
+			</tr>
+			{% endfor %}
 		</tbody>
 	</table>
 
