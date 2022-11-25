@@ -1,9 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError, TextAreaField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError, TextAreaField, SelectMultipleField
 from wtforms.validators import DataRequired, EqualTo, Length
 from wtforms.widgets import TextArea
 from flask_ckeditor import CKEditorField
 from flask_wtf.file import FileField
+from app.helpers import languages
 
 # Create A Search Form
 class SearchForm(FlaskForm):
@@ -17,6 +18,16 @@ class LoginForm(FlaskForm):
 	password = PasswordField("Password", validators=[DataRequired()])
 	submit = SubmitField("Submit")
 
+class LawyerPostForm(FlaskForm):
+	profile_pic = FileField("Profile Pic")
+	name = StringField("Name", validators=[DataRequired()])
+	title = StringField("Title", validators=[DataRequired()])
+	description = StringField("Description", validators=[DataRequired()])
+	phone = StringField("Phone", validators=[DataRequired()])
+	languages = SelectMultipleField("Languages", choices=languages.languages)
+	location = StringField("Location", validators=[DataRequired()])
+	expertise = SelectMultipleField("Expertise", choices=[('H1B', 'H1B'), ('OPT', 'OPT'), ('CPT', 'CPT'), ('F1 Visa', 'F1 Visa'), ('J1 Visa', 'J1 Visa')])
+	submit = SubmitField("Submit")
 
 # Create a Posts Form
 class PostForm(FlaskForm):

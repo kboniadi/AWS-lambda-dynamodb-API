@@ -43,7 +43,7 @@
 				<td>{{ lawyer.expertise|join(', ') }}</td>
 				<td>
 					<form method="POST" action="/dashboard" class="d-flex justify-content-between">
-						<button type="submit" class="btn btn-success" name="submit_button" value="Edit {{ lawyer.email }}"><i class="fas fa-edit"></i></button>
+						<button type="button" class="btn btn-success" name="submit_button" value="Edit {{ lawyer.email }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fas fa-edit"></i></button>
 						<button type="submit" class="btn btn-danger" name="submit_button" value="Delete {{ lawyer.email }}"><i class="far fa-trash-alt"></i></button>
 					</form>
 				</td>
@@ -52,5 +52,63 @@
 		</tbody>
 	</table>
 
+	<!-- Modal -->
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Row</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="p-3 mb-5">
+						<form method="POST">
+							{{ form.hidden_tag() }}
+					
+							{{ form.name.label(class="form-label") }}
+					
+							{{ form.name(class="form-control") }}
+							<br/>
+					
+							{{ form.title.label(class="form-label") }}
+					
+							{{ form.title(class="form-control") }}
+							<br/>
+					
+							{{ form.description.label(class="form-label") }}
+					
+							{{ form.description(class="form-control") }}
+							<br/>
+					
+							{{ form.phone.label(class="form-label") }}
+					
+							{{ form.phone(class="form-control") }}
+							<br/>
+							
+							{{ form.languages.label(class="form-label") }}
+					
+							{{ form.languages(class="form-control") }}
+							<br/>
+					
+							{{ form.location.label(class="form-label") }}
+					
+							{{ form.location(class="form-control") }}
+							<br/>
 
+							{{ form.expertise.label(class="form-label") }}
+					
+							{{ form.expertise(class="form-control") }}
+							<br/>
+					
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					{{ form.submit(class="btn btn-secondary") }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="{{ url_for('static', filename='js/globals.js')}}"></script>
 {% endblock %}

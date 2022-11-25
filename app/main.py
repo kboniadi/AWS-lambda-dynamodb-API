@@ -5,7 +5,7 @@ from datetime import date, datetime
 from flask import Flask, flash, redirect, render_template, request, url_for, current_app
 from flask_login import (LoginManager, UserMixin, current_user, login_required,
                          login_user, logout_user)
-from app.webforms import (LoginForm, NamerForm, PasswordForm, PostForm, SearchForm,
+from app.webforms import (LawyerPostForm, LoginForm, NamerForm, PasswordForm, PostForm, SearchForm,
                       UserForm)
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
@@ -79,19 +79,17 @@ def logout():
 @login_required
 def dashboard():
 	lawyers = lawyers_domain.get_all()
-	
+	form = LawyerPostForm()
 	if request.method == 'POST':
 		btn_type, email = request.form['submit_button'].split(" ")
-		if btn_type == "Edit":
-			flash(f"Successfully updated the account associated with {email}")
-		elif btn_type == "Delete":
+		if btn_type == "Delete":
 			lawyers_domain.delete_lawyer(email)
 			flash(f"Successfully deleted {email}")
 		
 		return redirect(url_for("dashboard"))
 
 
-	return render_template('dashboard.html', lawyers=lawyers)
+	return render_template('dashboard.html', lawyers=lawyers, form=form)
 
 
 # Create Custom Error Pages
