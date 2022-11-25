@@ -1,10 +1,12 @@
+import logging
 from flask import jsonify
 from botocore.exceptions import ClientError
 from boto3.resources.base import ServiceResource
 from boto3.dynamodb.conditions import Key
+from mypy_boto3_dynamodb import DynamoDBServiceResource
 
 class LawyersRepository:
-    def __init__(self, db: ServiceResource) -> None:
+    def __init__(self, db: DynamoDBServiceResource) -> None:
         self.__db = db
 
     def get_all(self):
@@ -20,7 +22,10 @@ class LawyersRepository:
             response = table.get_item(Key={'email': email})
             return response['Item']
         except ClientError as e:
-            raise ValueError(e.response['Error']['Message'])
+            logging.error(
+                "Couldn't get lawyer %s. Here's why: %s: %s", email,
+                e.response['Error']['Code'], e.response['Error']['Message'])
+            raise
 
     def create_lawyer(self, lawyer: dict):
         table = self.__db.Table('Core')
@@ -67,8 +72,14 @@ class LawyersRepository:
         return response
 
     def delete_lawyer(self, email: str):
-        table = self.__db.Table('Core')
-        response = table.delete_item(
-            Key={'email': email}
-        )
-        return response
+        try:
+            table = self.__db.Table('Core')
+            response = table.delete_item(
+                Key={'category': "lawyer", 'email': email}
+            )
+            return response
+        except ClientError as e:
+            logging.error(
+                "Couldn't delete lawyer %s. Here's why: %s: %s", email,
+                e.response['Error']['Code'], e.response['Error']['Message'])
+            raise

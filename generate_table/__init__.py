@@ -1,6 +1,7 @@
 import boto3
+from mypy_boto3_dynamodb import DynamoDBServiceResource
 
-def initialize_db():
+def initialize_db() -> DynamoDBServiceResource:
     ddb = boto3.resource('dynamodb',
                          endpoint_url='http://localhost:8000',
                          region_name='example',

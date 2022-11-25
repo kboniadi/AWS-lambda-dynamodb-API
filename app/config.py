@@ -24,3 +24,7 @@ class Config(object):
     JWT_BLACKLIST_TOKEN_CHECKS = ["access", "refresh"]
 
     REDIS_URL = os.environ.get("REDIS_URL") or "redis://"
+
+    DB_REGION_NAME = os.getenv('DB_REGION_NAME')
+    DB_ACCESS_KEY_ID = os.getenv('DB_ACCESS_KEY_ID')
+    DB_SECRET_ACCESS_KEY = os.getenv('DB_SECRET_ACCESS_KEY')

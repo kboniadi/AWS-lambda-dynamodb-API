@@ -43,5 +43,5 @@ class LawyersDomain():
     def update_lawyer(self, lawyer: LawyersModel):
         return self.__repository.update_lawyer(lawyer.dict())
 
-    def delete_lawyer(self, uid: str):
-        return self.__repository.delete_lawyer(uid)
+    def delete_lawyer(self, email: str):
+        return self.__repository.delete_lawyer(email)

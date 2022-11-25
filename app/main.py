@@ -19,7 +19,7 @@ app = create_app()
 # Flask_Login Stuff
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'login'  # type: ignore
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -79,60 +79,17 @@ def logout():
 @login_required
 def dashboard():
 	lawyers = lawyers_domain.get_all()
-	print(request)
+	
 	if request.method == 'POST':
-		if request.form['submit_button'] == 'Edit':
-			print(len(lawyers))
-
-		if request.form['submit_button'] == 'Delete':
-			print(lawyers)
-
-	# form = UserForm()
-	# if request.method == "POST":
-	# 	name_to_update.name = request.form['name']
-	# 	name_to_update.email = request.form['email']
-	# 	name_to_update.favorite_color = request.form['favorite_color']
-	# 	name_to_update.username = request.form['username']
-	# 	name_to_update.about_author = request.form['about_author']
+		btn_type, email = request.form['submit_button'].split(" ")
+		if btn_type == "Edit":
+			flash(f"Successfully updated the account associated with {email}")
+		elif btn_type == "Delete":
+			lawyers_domain.delete_lawyer(email)
+			flash(f"Successfully deleted {email}")
 		
+		return redirect(url_for("dashboard"))
 
-	# 	# Check for profile pic
-	# 	if request.files['profile_pic']:
-	# 		name_to_update.profile_pic = request.files['profile_pic']
-
-	# 		# Grab Image Name
-	# 		pic_filename = secure_filename(name_to_update.profile_pic.filename)
-	# 		# Set UUID
-	# 		pic_name = str(uuid.uuid1()) + "_" + pic_filename
-	# 		# Save That Image
-	# 		saver = request.files['profile_pic']
-			
-
-	# 		# Change it to a string to save to db
-	# 		name_to_update.profile_pic = pic_name
-	# 		try:
-	# 			db.session.commit()
-	# 			saver.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
-	# 			flash("User Updated Successfully!")
-	# 			return render_template("dashboard.html", 
-	# 				form=form,
-	# 				name_to_update = name_to_update)
-	# 		except:
-	# 			flash("Error!  Looks like there was a problem...try again!")
-	# 			return render_template("dashboard.html", 
-	# 				form=form,
-	# 				name_to_update = name_to_update)
-	# 	else:
-	# 		db.session.commit()
-	# 		flash("User Updated Successfully!")
-	# 		return render_template("dashboard.html", 
-	# 			form=form, 
-	# 			name_to_update = name_to_update)
-	# else:
-	# 	return render_template("dashboard.html", 
-	# 			form=form,
-	# 			name_to_update = name_to_update,
-	# 			id = id)
 
 	return render_template('dashboard.html', lawyers=lawyers)
 
@@ -146,7 +103,7 @@ def page_not_found(e):
 
 # Internal Server Error
 @app.errorhandler(500)
-def page_not_found(e):
+def internal_error_page(e):
 	return render_template("500.html"), 500
 
 # Create Model
