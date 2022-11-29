@@ -1,12 +1,13 @@
-from uuid import uuid4
-from pydantic import Field
 from decimal import Decimal
-from pydantic import BaseModel
-from pydantic.types import UUID4
-from typing import List, Optional
 from enum import Enum
+from typing import List, Optional
+from uuid import uuid4
+
+from pydantic import BaseModel, Field
+from pydantic.types import UUID4
 
 from app.repository.lawyers_repository import LawyersRepository
+
 
 class Expertise(str, Enum):
     h1b = "H1B"

@@ -1,10 +1,13 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError, TextAreaField, SelectMultipleField
-from wtforms.validators import DataRequired, EqualTo, Length
-from wtforms.widgets import TextArea
+from flask import flash
 from flask_ckeditor import CKEditorField
+from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
+from wtforms import (EmailField, PasswordField, SelectMultipleField,
+                     StringField, SubmitField, TextAreaField, ValidationError)
+from wtforms.validators import DataRequired, Email, EqualTo
+
 from app.helpers.languages import languagesList
+from app.routers.lawyers.routes import lawyers_domain
 
 # Create A Search Form
 class SearchForm(FlaskForm):
@@ -20,6 +23,7 @@ class LoginForm(FlaskForm):
 
 class LawyerForm(FlaskForm):
 	profile_pic = FileField("Profile Pic")
+	email = EmailField("Email", validators=[DataRequired(), Email()])
 	name = StringField("Name", validators=[DataRequired()])
 	title = StringField("Title", validators=[DataRequired()])
 	description = StringField("Description", validators=[DataRequired()])

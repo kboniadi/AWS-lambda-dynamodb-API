@@ -82,13 +82,41 @@ def dashboard():
 	lawyers = lawyers_domain.get_all()
 	return render_template('dashboard.html', lawyers=lawyers)
 
+@app.route('/lawyer/add', methods=['GET', 'POST'])
+@login_required
+def add_lawyer():
+	form = LawyerForm()
+
+	if form.validate_on_submit():
+		if lawyers_domain.get_lawyer(form.email.data) is not None:
+			flash("That email is already taken!!")
+			form.email.errors.append("email taken")
+		else:
+			lawyers_domain.create_lawyer(LawyersModel(
+				profile_url="",
+				email=form.email.data,
+				name=form.name.data,
+				title=form.title.data,
+				description=form.description.data,
+				phone=form.phone.data,
+				languages=form.languages.data or [],
+				location=form.location.data,
+				expertise=form.expertise.data or []
+			))
+			flash("A new entry has been added")
+			return redirect(url_for('dashboard'))
+
+	return render_template('add_lawyer.html', form=form)
+
 @app.route('/lawyer/edit/<string:email>', methods=['GET', 'POST'])
 @login_required
 def edit_lawyer(email: str):
 	lawyer = lawyers_domain.get_lawyer(email)
+	original_email = str(lawyer['email'])
 	lawyer["profile_url"] = ""
-	form = LawyerForm(expertise=lawyer["expertise"], languages=map(lambda x: languagesDict[x], lawyer["languages"]))
+	form = LawyerForm(expertise=lawyer["expertise"], languages=lawyer["languages"])
 	if form.validate_on_submit():
+		lawyer["email"] = form.email.data
 		lawyer["name"] = form.name.data
 		lawyer["title"] = form.title.data
 		lawyer["description"] = form.description.data
@@ -97,9 +125,19 @@ def edit_lawyer(email: str):
 		lawyer["location"] = form.location.data
 		lawyer["expertise"] = form.expertise.data
 
-		lawyers_domain.update_lawyer(LawyersModel.parse_obj(lawyer))
+		try:
+			lawyers_domain.update_lawyer(LawyersModel.parse_obj(lawyer))
+		except:
+			raise
+		else:
+			if original_email != lawyer['email']:
+				print("deleted")
+				lawyers_domain.delete_lawyer(original_email)
+
 		flash("Lawyer info has been updated")
 		return redirect(url_for('dashboard'))
+
+	form.email.data = lawyer["email"]
 	form.name.data = lawyer["name"]
 	form.title.data = lawyer["title"]
 	form.description.data = lawyer["description"]
